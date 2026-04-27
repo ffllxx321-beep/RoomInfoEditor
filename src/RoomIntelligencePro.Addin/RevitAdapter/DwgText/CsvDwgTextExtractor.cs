@@ -14,9 +14,9 @@ public sealed class CsvDwgTextExtractor : IDwgTextExtractor
             throw new ArgumentException("请选择有效的 CSV 文件路径。", nameof(csvFilePath));
         }
 
-        if (!System.IO.File.Exists(csvFilePath))
+        if (!File.Exists(csvFilePath))
         {
-            throw new System.IO.FileNotFoundException("未找到 CSV 文件，请检查文件路径。", csvFilePath);
+            throw new FileNotFoundException("未找到 CSV 文件，请检查文件路径。", csvFilePath);
         }
 
         using var parser = new TextFieldParser(csvFilePath)
