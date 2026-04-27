@@ -29,11 +29,11 @@ public sealed class RevitRoomRuleSubjectProvider : IRoomRuleSubjectProvider
                 var name = room.get_Parameter(BuiltInParameter.ROOM_NAME)?.AsString() ?? string.Empty;
                 var area = UnitUtils.ConvertFromInternalUnits(room.Area, UnitTypeId.SquareMeters);
                 var height = ResolveRoomHeightMeters(room);
-                roomDoors.TryGetValue(room.Id.IntegerValue, out var doorWidths);
+                roomDoors.TryGetValue(ToIntElementIdValue(room.Id), out var doorWidths);
 
                 return new RoomRuleSubject
                 {
-                    RoomElementId = room.Id.IntegerValue,
+                    RoomElementId = ToIntElementIdValue(room.Id),
                     RoomNumber = number,
                     RoomName = name,
                     AreaSquareMeters = area,
@@ -78,10 +78,11 @@ public sealed class RevitRoomRuleSubjectProvider : IRoomRuleSubjectProvider
             return;
         }
 
-        if (!map.TryGetValue(room.Id.IntegerValue, out var widths))
+        var roomElementId = ToIntElementIdValue(room.Id);
+        if (!map.TryGetValue(roomElementId, out var widths))
         {
             widths = [];
-            map[room.Id.IntegerValue] = widths;
+            map[roomElementId] = widths;
         }
 
         widths.Add(width);
@@ -126,11 +127,19 @@ public sealed class RevitRoomRuleSubjectProvider : IRoomRuleSubjectProvider
 
     private static Room? ResolveDoorToRoom(FamilyInstance door, Phase? phase)
     {
-        return phase is null ? door.ToRoom : door.ToRoom[phase];
+        // For phase-specific room mapping use API methods; indexed room access is not valid in current API shape.
+        return phase is null ? door.ToRoom : door.get_ToRoom(phase);
     }
 
     private static Room? ResolveDoorFromRoom(FamilyInstance door, Phase? phase)
     {
-        return phase is null ? door.FromRoom : door.FromRoom[phase];
+        // For phase-specific room mapping use API methods; indexed room access is not valid in current API shape.
+        return phase is null ? door.FromRoom : door.get_FromRoom(phase);
+    }
+
+    private static int ToIntElementIdValue(ElementId elementId)
+    {
+        // Revit 2024+ uses ElementId.Value (long). Keep explicit checked cast for existing int-based domain model.
+        return checked((int)elementId.Value);
     }
 }

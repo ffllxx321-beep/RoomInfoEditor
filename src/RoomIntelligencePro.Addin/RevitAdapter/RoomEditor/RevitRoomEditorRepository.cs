@@ -46,7 +46,7 @@ public sealed class RevitRoomEditorRepository : IRoomEditorRepository
 
             rooms.Add(new RoomEditorRoom
             {
-                ElementId = room.Id.IntegerValue,
+                ElementId = ToIntElementIdValue(room.Id),
                 LevelName = levelName,
                 AreaSquareMetersText = areaText,
                 Name = name,
@@ -92,7 +92,7 @@ public sealed class RevitRoomEditorRepository : IRoomEditorRepository
             var roomMap = new FilteredElementCollector(_document, roomIds)
                 .WhereElementIsNotElementType()
                 .OfType<Room>()
-                .ToDictionary(r => r.Id.IntegerValue, r => r);
+                .ToDictionary(r => ToIntElementIdValue(r.Id), r => r);
 
             foreach (var batch in Batch(rooms, SaveBatchSize))
             {
@@ -252,5 +252,11 @@ public sealed class RevitRoomEditorRepository : IRoomEditorRepository
         }
 
         return batches;
+    }
+
+    private static int ToIntElementIdValue(ElementId elementId)
+    {
+        // Revit 2024+ uses ElementId.Value (long). Keep explicit checked cast for existing int-based domain model.
+        return checked((int)elementId.Value);
     }
 }
