@@ -46,7 +46,7 @@ public sealed class RevitRoomEditorRepository : IRoomEditorRepository
 
             rooms.Add(new RoomEditorRoom
             {
-                ElementId = ToIntElementIdValue(room.Id),
+                ElementId = room.Id.IntegerValue,
                 LevelName = levelName,
                 AreaSquareMetersText = areaText,
                 Name = name,
@@ -92,7 +92,7 @@ public sealed class RevitRoomEditorRepository : IRoomEditorRepository
             var roomMap = new FilteredElementCollector(_document, roomIds)
                 .WhereElementIsNotElementType()
                 .OfType<Room>()
-                .ToDictionary(r => ToIntElementIdValue(r.Id), r => r);
+                .ToDictionary(r => r.Id.IntegerValue, r => r);
 
             foreach (var batch in Batch(rooms, SaveBatchSize))
             {
@@ -252,10 +252,5 @@ public sealed class RevitRoomEditorRepository : IRoomEditorRepository
         }
 
         return batches;
-    }
-
-    private static int ToIntElementIdValue(ElementId elementId)
-    {
-        return checked((int)elementId.Value);
     }
 }

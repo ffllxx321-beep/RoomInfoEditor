@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.IO;
 using Microsoft.VisualBasic.FileIO;
 using RoomIntelligencePro.Addin.Core.Contracts;
 using RoomIntelligencePro.Addin.Core.DwgText;
@@ -17,7 +16,7 @@ public sealed class CsvDwgTextExtractor : IDwgTextExtractor
 
         if (!File.Exists(csvFilePath))
         {
-            throw new System.IO.FileNotFoundException("未找到 CSV 文件，请检查文件路径。", csvFilePath);
+            throw new FileNotFoundException("未找到 CSV 文件，请检查文件路径。", csvFilePath);
         }
 
         using var parser = new TextFieldParser(csvFilePath)

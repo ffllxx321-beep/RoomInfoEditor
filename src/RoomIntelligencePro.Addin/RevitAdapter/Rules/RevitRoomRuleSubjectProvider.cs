@@ -29,11 +29,11 @@ public sealed class RevitRoomRuleSubjectProvider : IRoomRuleSubjectProvider
                 var name = room.get_Parameter(BuiltInParameter.ROOM_NAME)?.AsString() ?? string.Empty;
                 var area = UnitUtils.ConvertFromInternalUnits(room.Area, UnitTypeId.SquareMeters);
                 var height = ResolveRoomHeightMeters(room);
-                roomDoors.TryGetValue(ToIntElementIdValue(room.Id), out var doorWidths);
+                roomDoors.TryGetValue(room.Id.IntegerValue, out var doorWidths);
 
                 return new RoomRuleSubject
                 {
-                    RoomElementId = ToIntElementIdValue(room.Id),
+                    RoomElementId = room.Id.IntegerValue,
                     RoomNumber = number,
                     RoomName = name,
                     AreaSquareMeters = area,
@@ -78,11 +78,10 @@ public sealed class RevitRoomRuleSubjectProvider : IRoomRuleSubjectProvider
             return;
         }
 
-        var roomElementId = ToIntElementIdValue(room.Id);
-        if (!map.TryGetValue(roomElementId, out var widths))
+        if (!map.TryGetValue(room.Id.IntegerValue, out var widths))
         {
             widths = [];
-            map[roomElementId] = widths;
+            map[room.Id.IntegerValue] = widths;
         }
 
         widths.Add(width);
@@ -127,16 +126,11 @@ public sealed class RevitRoomRuleSubjectProvider : IRoomRuleSubjectProvider
 
     private static Room? ResolveDoorToRoom(FamilyInstance door, Phase? phase)
     {
-        return phase is null ? door.ToRoom : door.get_ToRoom(phase);
+        return phase is null ? door.ToRoom : door.ToRoom[phase];
     }
 
     private static Room? ResolveDoorFromRoom(FamilyInstance door, Phase? phase)
     {
-        return phase is null ? door.FromRoom : door.get_FromRoom(phase);
-    }
-
-    private static int ToIntElementIdValue(ElementId elementId)
-    {
-        return checked((int)elementId.Value);
+        return phase is null ? door.FromRoom : door.FromRoom[phase];
     }
 }
