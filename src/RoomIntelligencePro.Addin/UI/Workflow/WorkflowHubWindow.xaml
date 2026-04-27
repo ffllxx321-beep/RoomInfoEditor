@@ -1,0 +1,85 @@
+<Window x:Class="RoomIntelligencePro.Addin.UI.Workflow.WorkflowHubWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Room Intelligence Pro · Workflow Hub"
+        Width="1320"
+        Height="860"
+        MinWidth="1100"
+        MinHeight="720"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackgroundBrush}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/RoomIntelligencePro.Addin;component/UI/Styles/PremiumTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Style="{StaticResource TonalPanelStyle}" Margin="0,0,0,14">
+            <StackPanel>
+                <TextBlock Text="Workflow Hub" Foreground="{StaticResource TextMainBrush}" FontSize="28" FontWeight="SemiBold" />
+                <TextBlock Text="链接DWG → 建模 → 生成房间 → 匹配房间名 → 审核 → 导出报告"
+                           Foreground="{StaticResource TextSubBrush}" Margin="0,6,0,0" />
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <UniformGrid Columns="2">
+                <Border Style="{StaticResource BentoCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="1. 链接DWG/导入文本" Foreground="{StaticResource TextMainBrush}" FontSize="18" FontWeight="SemiBold" />
+                        <TextBlock Text="从 CSV 读取 Text/X/Y/Layer 并检查格式。" Foreground="{StaticResource TextSubBrush}" Margin="0,8,0,14" />
+                        <Button Content="查看导入说明" Click="OnImportGuideClick" Style="{StaticResource DockButtonStyle}" Width="160" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource BentoCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="2. 建模与房间编辑" Foreground="{StaticResource TextMainBrush}" FontSize="18" FontWeight="SemiBold" />
+                        <TextBlock Text="进入 Room Editor 批量维护编号与名称。" Foreground="{StaticResource TextSubBrush}" Margin="0,8,0,14" />
+                        <Button Content="打开 Room Editor" Click="OnOpenRoomEditorClick" Style="{StaticResource PrimaryDockButtonStyle}" Width="190" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource BentoCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="3. 生成缺失房间" Foreground="{StaticResource TextMainBrush}" FontSize="18" FontWeight="SemiBold" />
+                        <TextBlock Text="先 Preview 再批量创建，避免误操作。" Foreground="{StaticResource TextSubBrush}" Margin="0,8,0,14" />
+                        <Button Content="运行 Preview" Click="OnPreviewMissingRoomsClick" Style="{StaticResource DockButtonStyle}" Width="170" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource BentoCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="4. 匹配房间名" Foreground="{StaticResource TextMainBrush}" FontSize="18" FontWeight="SemiBold" />
+                        <TextBlock Text="点在多边形 + 最近邻 + 置信度，处理冲突。" Foreground="{StaticResource TextSubBrush}" Margin="0,8,0,14" />
+                        <Button Content="查看匹配策略" Click="OnMatchingGuideClick" Style="{StaticResource DockButtonStyle}" Width="170" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource BentoCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="5. 规范审核" Foreground="{StaticResource TextMainBrush}" FontSize="18" FontWeight="SemiBold" />
+                        <TextBlock Text="执行 Rule Engine，输出违规清单与建议。" Foreground="{StaticResource TextSubBrush}" Margin="0,8,0,14" />
+                        <Button Content="查看规则说明" Click="OnRuleGuideClick" Style="{StaticResource DockButtonStyle}" Width="170" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource BentoCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="6. 导出报告" Foreground="{StaticResource TextMainBrush}" FontSize="18" FontWeight="SemiBold" />
+                        <TextBlock Text="导出审核与匹配结果，支持交付留档。" Foreground="{StaticResource TextSubBrush}" Margin="0,8,0,14" />
+                        <Button Content="查看导出计划" Click="OnExportGuideClick" Style="{StaticResource DockButtonStyle}" Width="170" />
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+        </ScrollViewer>
+    </Grid>
+</Window>
