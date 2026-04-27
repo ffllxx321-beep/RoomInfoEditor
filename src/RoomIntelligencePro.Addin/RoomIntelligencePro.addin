@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>Room Intelligence Pro</Name>
+    <Assembly>C:\ProgramData\Autodesk\Revit\Addins\2026\RoomIntelligencePro.Addin.dll</Assembly>
+    <AddInId>9D55D7E3-53D1-4FB2-B770-15DDB80B9F36</AddInId>
+    <FullClassName>RoomIntelligencePro.Addin.App</FullClassName>
+    <VendorId>RIP</VendorId>
+    <VendorDescription>Room Intelligence Pro</VendorDescription>
+  </AddIn>
+</RevitAddIns>
